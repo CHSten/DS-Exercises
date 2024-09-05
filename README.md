@@ -25,9 +25,9 @@ I will provide new templates as the course progresses.
 
 You should be able to execute your solution to exercise 1 using the following lines:
 ```bash
-python3.10 exercise_runner.py --lecture 1 --algorithm Gossip --type sync --devices 3
-python3.10 exercise_runner.py --lecture 1 --algorithm Gossip --type async --devices 3
-python3.10 exercise_runner.py --lecture 1 --algorithm Gossip --type stepping --devices 3
+python exercise_runner.py --lecture 1 --algorithm Gossip --type sync --devices 3
+python exercise_runner.py --lecture 1 --algorithm Gossip --type async --devices 3
+python exercise_runner.py --lecture 1 --algorithm Gossip --type stepping --devices 3
 ```
 
 The first line will execute your implementation of the `Gossip` algorithm in a synchronous setting with three devices, 
@@ -37,7 +37,7 @@ The third line will execute your implementation in a synchronous setting, launch
 For usage of the framework, see `exercises/demo.py` for a lightweight example.
 The example can be run with:
 ```bash
-python3.10 exercise_runner.py --lecture 0 --algorithm PingPong --type async --devices 3
+python exercise_runner.py --lecture 0 --algorithm PingPong --type async --devices 3
 ```
 
 ## Stepping emulator
