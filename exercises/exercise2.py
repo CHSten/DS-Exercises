@@ -30,6 +30,7 @@ class RipCommunication(Device):
         super().__init__(index, number_of_devices, medium)
         
         self.neighbors = [] # generate an appropriate list
+        self.neighbors = [(index - 1) % number_of_devices, (index + 1) % number_of_devices]
 
         self.routing_table = dict()
 
@@ -55,6 +56,9 @@ class RipCommunication(Device):
                     for neigh in self.neighbors:
                         self.medium().send(RipMessage(self.index(), neigh, self.routing_table))
 
+                if (self.routing_table_complete()):
+                    return True
+
             if type(ingoing) is RoutableMessage:
                 print(f"Device {self.index()}: Routing from {ingoing.first_node} to {ingoing.last_node} via #{self.index()}: [#{ingoing.content}]")
                 if ingoing.last_node is self.index():
@@ -71,8 +75,83 @@ class RipCommunication(Device):
 
     def merge_tables(self, src, table):
         # return None if the table does not change
-        pass
 
+        # Tl = local table (self.routing_table)
+        # Tr = table recieved (table)
+        # n = link (self.index())
+        # Rr = table recieved rows (table.keys())
+        # Rl = local table rows (self.routing_table.keys())
+
+        changeHasBeenDone = False
+
+        newTable = dict(self.routing_table)
+
+        #Recieve
+        for dest, (link, cost) in table.items():
+            if dest not in self.routing_table and cost + 1 < self.routing_table[dest][1]:
+                newTable[dest][1] = cost + 1
+                changeHasBeenDone = True
+
+        # for dest, (link, cost) in newTable.items():
+        #     if (link != self.index()):
+        #         cost = cost + 1
+        #         link = self.index()
+        #         table[key] = (link, cost)
+        #         if (key not in self.routing_table):
+        #             self.routing_table[key] = (link, cost)
+        #         else:
+        #             for self_key in self.routing_table.keys():
+        #                 (self_link, self_cost) = self.routing_table[self_key]
+        #                 if (key == self.index() and 
+        #                     (cost < self_cost or self_link == self.index())):
+        #                     self.routing_table[self_key] = table[key]
+        #                     changeHasBeenDone = True
+                
+        if not changeHasBeenDone:
+            return None
+        
+        return self.routing_table
+
+    def routing_table_complete(self):
+        if len(self.routing_table) < self.number_of_devices()-1:
+            return False
+        for row in self.routing_table:
+            (next_hop, distance) = self.routing_table[row]
+            if distance > (self.number_of_devices()/2):
+                return False
+            return True
 
     def print_result(self):
         print(f'\tDevice {self.index()} has routing table: {self.routing_table}')
+
+
+"""
+# Exercise 2
+1. Similarly to the first lecture, in the `__init__` of `RipCommunication`, create a ring topology (that is, set up who are the neighbors of each device). 
+2. Implement the RIP protocol (fill in missing code in merge_tables), described in \[DS, fifth edition\] Page 115-118. _(NOTICE: To run/debug the protocol, you must first implement the network topology described in "task 2.0" below.)_
+3. Now that you have a ring topology, consider a ring size of 10 devices.
+   1. How many messages are sent in total before the routing_tables of all nodes are synchronized?
+   2. How can you "know" that the routing tables are complete and you can start using the network to route packets? Consider the general case of internet, and the specific case of our toy ring network. 
+   3. For the ring network, consider an approach similar to
+      1. ```python
+         def routing_table_complete(self):
+           if len(self.routing_table) < self.number_of_devices()-1:
+               return False
+           return True
+         ```
+         Does it work? Each routing table should believe it is completed just one row short. How many times do the routing tables appear to be completed?
+   4. Try this other approach, which works better:
+      1. ```python
+         def routing_table_complete(self):
+           if len(self.routing_table) < self.number_of_devices()-1:
+               return False
+           for row in self.routing_table:
+               (next_hop, distance) = self.routing_table[row]
+               if distance > (self.number_of_devices()/2):
+                   return False
+              return True
+         ```
+    Is it realistic for a real network?
+4. Send a `RoutableMessage` after the routing tables are ready. Consider the termination problem. Can a node quit right after receiving the `RoutableMessage` for itself? What happens to the rest of the nodes?
+5. What happens, if a link has a negative cost? How many messages are sent before the `routing_tables` converge?
+"""
