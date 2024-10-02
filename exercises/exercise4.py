@@ -543,9 +543,24 @@ For all exercises today, you can use the `sync` network type - but most algorith
 1. Examine the algorithm 
     1. Make a doodle on the blackboard/paper showing a few processes, their state, and messages exchanged. Use e.g. a sequence diagram.
     2. Define the purpose of the vectors `_rn` and `_ln`.
+
+        ANSWER: "_rn" is requests recieved and "_ln" is requests executed
+
 2. Discuss the following situations
-   1. Is it possible that a node receives a token request message after the corresponding request has been granted? Sketch a scenario.
+   1. Is it possible that a node receives a token request 
+    message after the corresponding request has been granted? 
+    Sketch a scenario.
+
+        ANSWER: Yes. As a request may be recieved delayed,
+        updating the whole network, whom holds the token takes time.
+        Upon fulfilling the request the token holder changes but not
+        all nodes know this.
+
    2. How can a node know which nodes have ungranted requests?
+
+        ANSWER: if _rn[i] > _ln[i] then that devide still has 
+        ungranted requests
+
    3. How does the queue grow?
 
 3. Characterize the algorithms performance and correctness:
