@@ -532,3 +532,34 @@ class Bully(Device):
 
     def print_result(self):
         print(f'Leader seen from {self._id} is {self._leader}')
+
+
+"""
+Look at `exercises/exercise4.py`, here you should find the `SuzukiKasami` class 
+implementing Suzuki-Kasami’s Mutex Algorithm.
+
+For all exercises today, you can use the `sync` network type - but most algorithms should work for `async` also.
+
+1. Examine the algorithm 
+    1. Make a doodle on the blackboard/paper showing a few processes, their state, and messages exchanged. Use e.g. a sequence diagram.
+    2. Define the purpose of the vectors `_rn` and `_ln`.
+2. Discuss the following situations
+   1. Is it possible that a node receives a token request message after the corresponding request has been granted? Sketch a scenario.
+   2. How can a node know which nodes have ungranted requests?
+   3. How does the queue grow?
+
+3. Characterize the algorithms performance and correctness:
+   1. Is the algorithm correct? (ME1, ME2, ME3)
+   2. How does it perform ? (bandwidth, enter/exit delay)
+   3. How does it cope with failures? / How can it be made fault tolerant?
+
+4. Bonus exercise, modifying the `TokenRing` class of `exercises/exercise4.py`:
+   1. Implement heartbeats in the token-ring algorithm for failure detection,
+   2. Make it robust against node-failiures, and
+   3. Make it possible for new processes to join the ring.
+
+5. Extracurricular exercise/challenge (only if you have nothing better to do over the weekend)
+   1. Extend the mutex algorithm implementations s.t. the `do_work()` call starts an asynchronous process (e.g. a future) which later calls a `release()` method on the mutex classes.
+   2. Check that the algorithms still work, and modify where needed.
+   3. Submit a pull-request!
+"""
