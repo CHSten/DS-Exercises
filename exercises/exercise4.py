@@ -558,10 +558,12 @@ For all exercises today, you can use the `sync` network type - but most algorith
 
    2. How can a node know which nodes have ungranted requests?
 
-        ANSWER: if _rn[i] > _ln[i] then that devide still has 
+        ANSWER: if _rn[i] > _ln[i] then that device still has 
         ungranted requests
 
    3. How does the queue grow?
+
+        ANSWER: The queue grows when a device recieves a request
 
 3. Characterize the algorithms performance and correctness:
    1. Is the algorithm correct? (ME1, ME2, ME3)
