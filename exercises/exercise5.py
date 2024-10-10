@@ -383,3 +383,21 @@ class COMulticast(MulticastListener, MulticastService, Device):
 
     def run(self):
         self._b_multicast.run()
+
+
+"""
+# Exercise 5
+3. Design (and implement) Totally Ordered FIFO multicast (both requirements must be met).
+   You can use the `TOSEQMulticast` from `exercise5.py` as a starting-point.
+
+   1. Is it reliable? 
+      1. if not, can it become so? 
+      2. if it is, argue why!
+
+4. Discuss FIFO ordering in two overlapping multicast groups
+   1. FIFO is no longer guaranteed, how is it broken, and how do you fix it?
+
+5. Bonus exercise: Fix the ISIS algorithm!
+   1. Hint: how (and when) do you identify a tie?
+
+"""
